@@ -14,8 +14,35 @@ pub fn initialize_database() -> Result<()> {
         ",
         [],
     )?;
-
+    conn.execute(
+    "
+    CREATE TABLE IF NOT EXISTS maintenance_logs (
+        id INTEGER PRIMARY KEY,
+        aircraft_id INTEGER NOT NULL,
+        maintenance_date TEXT NOT NULL,
+        engineer_name TEXT NOT NULL,
+        work_done TEXT NOT NULL,
+        FOREIGN KEY (aircraft_id) REFERENCES aircraft(id)
+    )
+    ",
+    [],
+)?;
+    conn.execute(
+    "
+    CREATE TABLE IF NOT EXISTS maintenance_logs (
+        id INTEGER PRIMARY KEY,
+        aircraft_id INTEGER NOT NULL,
+        maintenance_date TEXT NOT NULL,
+        engineer_name TEXT NOT NULL,
+        aircraft_hours REAL NOT NULL,
+        work_done TEXT NOT NULL,
+        FOREIGN KEY (aircraft_id) REFERENCES aircraft(id)
+    )
+    ",
+    [],
+)?;
     Ok(())
+    
 }
 pub fn add_aircraft(
     registration: &str,

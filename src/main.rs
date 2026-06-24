@@ -9,10 +9,9 @@ fn main() {
 
     loop {
 
-        println!("\n=== AMMS ===");
         println!("1. Add Aircraft");
-        println!("2. Exit");
-
+        println!("2. View Aircraft");
+        println!("3. Exit");
         let mut choice = String::new();
         io::stdin()
             .read_line(&mut choice)
@@ -53,8 +52,24 @@ fn main() {
 
                 println!("Aircraft added.");
             }
+            "2" => {
 
-            "2" => break,
+            let aircraft = db::get_aircraft().unwrap();
+
+            println!("\n--- Aircraft Fleet ---");
+
+            for a in aircraft {
+
+                println!(
+                    "{} | {} | {} hrs",
+                    a.registration,
+                    a.aircraft_type,
+                    a.total_hours
+                );
+            }
+        }
+
+            "3" => break,
 
             _ => println!("Invalid choice"),
         }
