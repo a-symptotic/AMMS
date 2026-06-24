@@ -1,5 +1,5 @@
 use rusqlite::{params, Connection, Result};
-
+use crate::aircraft::Aircraft;
 pub fn initialize_database() -> Result<()> {
     let conn = Connection::open("amms.db")?;
 
@@ -33,4 +33,30 @@ pub fn add_aircraft(
     )?;
 
     Ok(())
+}
+pub fn get_aircraft() -> Result<Vec<Aircraft>> {
+
+    let conn = Connection::open("amms.db")?;
+
+    let mut stmt = conn.prepare(
+        "SELECT id, registration, aircraft_type, total_hours
+         FROM aircraft"
+    )?;
+
+    let aircraft_iter = stmt.query_map([], |row| {
+        Ok(Aircraft {
+            id: row.get(0)?,
+            registration: row.get(1)?,
+            aircraft_type: row.get(2)?,
+            total_hours: row.get(3)?,
+        })
+    })?;
+
+    let mut aircraft_list = Vec::new();
+
+    for aircraft in aircraft_iter {
+        aircraft_list.push(aircraft?);
+    }
+
+    Ok(aircraft_list)
 }
