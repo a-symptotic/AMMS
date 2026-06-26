@@ -1,1 +1,20 @@
 /target
+# Rust build files
+
+target/
+
+# SQLite database
+
+amms.db
+
+# macOS
+
+.DS_Store
+
+# VS Code
+
+.vscode/
+
+# Rust backup files
+
+**/*.rs.bk
